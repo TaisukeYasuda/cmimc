@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import fetch from 'isomorphic-fetch';
 
 import SignupForm from './signup';
@@ -11,41 +13,29 @@ const Blurb = ({ year, date }) => (
   </p>
 );
 
-class Introduction extends React.Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
-
-  componentDidMount() {
-    fetch('data/info.json', { method: 'get' })
-    .then(res => res.json())
-    .then(
-      res => { this.setState({ info: res }); },
-      err => { console.log(err); }
-    );
-  } 
-
-  render() {
-    const info = this.state.info || {};
-
-    return (
-      <div className='section white'>
-        <div className='row container'>
-          <div className='col l6 s12'>
-            <h4 className='header'>Welcome, mathletes!</h4>
-            <Blurb year={ info.year } date={ info.contest_date } />
-            <News />
-          </div>
-          <div className='col l5 offset-l1 s12'>
-            <div className='card'>
-              <SignupForm />
-            </div>
-          </div>
+const Introduction = ({ info }) => (
+  <div className='section white'>
+    <div className='row container'>
+      <div className='col l6 s12'>
+        <h4 className='header'>Welcome, mathletes!</h4>
+        <Blurb year={ info.year || 'N/A' } date={ info.contest_date || 'N/A' } />
+        <News />
+      </div>
+      <div className='col l5 offset-l1 s12'>
+        <div className='card'>
+          <SignupForm />
         </div>
-      </div> 
-    );
-  }
-}
+      </div>
+    </div>
+  </div> 
+);
 
-export default Introduction;
+Introduction.propTypes = {
+  info: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  info: state.init.info
+});
+
+export default connect(mapStateToProps)(Introduction);

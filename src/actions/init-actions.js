@@ -1,58 +1,64 @@
 import fetch from 'isomorphic-fetch';
 import { normalize } from 'normalizr';
 
-import { subjectsSchema } from '../schema';
+import { INIT_APP, RequestStatuses } from './types';
 
-import {
-  INIT_APP
-} from './types';
-
-const API_URL = 'http://localhost:8000/api',
-      CLIENT_ROOT_URL = 'http://localhost:8000';
+const DATA_URL = 'data';
 
 /*******************************************************************************
- * Synchronous actions.
+ * Utilities.
  ******************************************************************************/
 
-export function initErrorHandler(dispatch, errorMessage) {
-  dispatch({
-    type: INIT_APP,
-    payload: {
-      error: true,
-      message: errorMessage
-    }
-  });
+const fetchData = (endpoint, field) => {
+  return dispatch => {
+    fetch(`${DATA_URL}/${endpoint}`, { method: 'get' })
+    .then(
+      res => {
+        return res.json()
+        .then(data => {
+          dispatch({ 
+            type: INIT_APP,
+            payload: { 
+              status: RequestStatuses.SUCCESS, 
+              field: field, 
+              data: data 
+            }
+          });
+        });
+      }, 
+      err => {
+        errMessage = err.message || 'Failed to communicate with server.';
+        initErrHandler(errMessage)(dispatch);
+      }
+    );
+  }
+};
+
+/*******************************************************************************
+ * Actions creators.
+ ******************************************************************************/
+
+export function initErrHandler(errMessage) {
+  return dispatch => {
+    dispatch({
+      type: INIT_APP,
+      payload: {
+        error: true,
+        message: errMessage
+      }
+    });
+  }
 }
-
-/*******************************************************************************
- * Async thunk actions.
- ******************************************************************************/
 
 export function initApp() {
   return dispatch => {
     dispatch({ 
       type: INIT_APP, 
-      payload: { status: null }
+      payload: { status: RequestStatuses.PENDING }
     });
-    fetch(`${API_URL}/subjects`, { method: 'get' })
-    .then(
-      response => {
-        return response.json()
-        .then(data => {
-          if (data.error) initErrorHandler(dispatch, data.message);
-          else {
-            let entities = normalize(data.content, [ subjectsSchema ]).entities;
-            dispatch({ 
-              type: INIT_APP,
-              payload: { status: 'success', subjects: entities.subjects }
-            });
-          }
-        });
-      }, 
-      error => {
-        errorMessage = error.message || 'Failed to communicate with server.';
-        initErrorHandler(dispatch, errorMessage);
-      }
-    );
+    fetchData('info.json', 'info')(dispatch);
+    fetchData('news.json', 'news')(dispatch);
+    fetchData('archive.json', 'archive')(dispatch);
+    fetchData('staff.json', 'staff')(dispatch);
   }
 }
