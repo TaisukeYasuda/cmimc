@@ -55,7 +55,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-app.use('/archive', express.static('public/assets/docs/past-tests'));
+app.use('/docs', express.static('public/assets/docs'));
+app.use('/data', express.static('public/assets/js/json'));
 
 function login(req, res) {
   var email = req.body.email,

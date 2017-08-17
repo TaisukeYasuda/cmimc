@@ -18,108 +18,15 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
   <script src="assets/js/vendor/materialize.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.js"></script>
   <script src="https://use.fontawesome.com/f2da0bb9e7.js"></script>
   <!-- Custom -->
   <script src="assets/js/script-main.js"></script>
   <link rel="stylesheet" href="assets/css/style-main.css">
   <link rel="icon" href="assets/img/favicon.ico">
-  <!-- Angular -->
-  <script src="assets/js/angular-app.js"></script>
-  <script src="assets/js/services/auth.js"></script>
-  <script src="assets/js/services/account.js"></script>
-  <script src="assets/js/controllers/MainCtrl.js"></script>
-  <script src="assets/js/controllers/IndexCtrl.js"></script>
-  <script src="assets/js/controllers/ArchiveCtrl.js"></script>
-  <script src="assets/js/controllers/StaffCtrl.js"></script>
-  <script src="assets/js/controllers/AccountCtrl.js"></script>
-  <script src="assets/js/directives/form-update.js"></script>
 </head>
 
-<body ng-app="mainApp" ng-controller="MainCtrl">
-  <header>
-    <div class="navbar-fixed">
-      <nav class="z-depth-0">
-        <div class="nav-wrapper container">
-          <a href="index.html" class="brand-logo"><img src="assets/img/cmimc-logo-huge.png" height="28px"></a>
-          <ul class="right hide-on-med-and-down">
-            <li><a href="/" class="grey-text text-darken-3">Home</a></li>
-            <li><a href="/information" class="grey-text text-darken-3">Information</a></li>
-            <li><a href="/archive" class="grey-text text-darken-3">Archive</a></li>
-            <li><a href="/staff" class="grey-text text-darken-3">Staff</a></li>
-            <li ng-show="isLoggedIn()"><a href="/account" class="grey-text text-darken-3">Account</a></li>
-            <li ng-hide="isLoggedIn()"><a class="waves-effect waves-light btn red darken-2" data-target="login">Log In</a></li>
-            <li ng-show="isLoggedIn()"><a class="waves-effect waves-light btn red darken-2" ng-click="logout()">Log Out</a></li>
-          </ul>
-        </div>
-      </nav>
-    </div>
-    <div id="login" class="modal login-modal">
-      <div class="modal-content">
-        <div class="row">
-          <div class="col s12">
-            <form ng-submit="login()">
-              <h4>Log In</h4>
-              <div class="row">
-                <div class="input-field col s12">
-                  <input id="account_login_email" type="email" class="validate" ng-model="login_info.email">
-                  <label for="account_login_email">Email</label>
-                </div>
-                <div class="input-field col s12">
-                  <input id="account_login_password" type="password" class="validate" ng-model="login_info.password">
-                  <label for="account_login_password">Password</label>
-                </div>
-                <div class="col s12 red-text text-darken-2" ng-if="login_info.fail">
-                  <p>{{login_info.message}}<p>
-                </div>
-                <div class="input-field col s12">
-                  <button class="btn waves-effect waves-light right red darken-2" type="submit" name="action">Log In</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <ui-view autoscroll="false"></ui-view>
-  </main>
-
-  <footer class="page-footer blue-grey lighten-2">
-    <div class="container">
-      <div class="row">
-        <div class="col l3 s12">
-          <img src="assets/img/cmimc-logo-huge-white.png" class="footer-logo" height="36px">
-        </div>
-        <div class="col l3 offset-l1 s12">
-          <h5 class="grey-text text-lighten-4">Information</h5>
-          <ul>
-            <li><a href="#" class="grey-text text-lighten-3">Rules</a></li>
-            <li><a href="/faq" class="grey-text text-lighten-3">FAQ</a></li>
-          </ul>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="grey-text text-lighten-4">Contact</h5>
-          <ul>
-            <li><a href="#" class="grey-text text-lighten-3">Email</a></li>
-            <li><a href="https://www.facebook.com/CMIMC" target="_blank" class="grey-text text-lighten-3">Facebook</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copyright blue-grey lighten-1">
-      <div class="container">
-        <ul class="grey-text text-lighten-3">
-          <li>&copy; 2017 CMIMC</li>
-          <li><a href="/terms" class="grey-text text-lighten-3">Terms</a></li>
-          <li><a href="/privacy" class="grey-text text-lighten-3">Privacy</a></li>
-          <li><a href="#" class="grey-text text-lighten-3">ctj@math.cmu.edu</a></li>
-        </ul>
-      </div>
-    </div>
-  </footer>
+<body>
+  <div id="root"></div>
+  <script src="assets/js/index.bundle.js"></script>
 </body>
 </html>
