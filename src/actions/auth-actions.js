@@ -1,17 +1,18 @@
 import fetch from 'isomorphic-fetch';
-import { AUTH_USER,  
-         AUTH_ERROR, 
-         UNAUTH_USER } from './types';
+import { 
+  AUTH_USER,  
+  AUTH_ERROR, 
+  UNAUTH_USER 
+} from './types';
 
-const API_URL = 'http://localhost:8000',
-      CLIENT_ROOT_URL = 'http://localhost:8000';
+const API_URL = 'http://localhost:8000';
 
 /*******************************************************************************
  * Synchronous actions.
  ******************************************************************************/
 
-export function errorHandler(dispatch, errorMessage) {
-  dispatch({ type: AUTH_ERROR, payload: errorMessage });
+export function authErrHandler(dispatch, errMessage) {
+  dispatch({ type: AUTH_ERROR, payload: errMessage });
 }
 
 export function logoutUser(dispatch) {
@@ -31,19 +32,20 @@ export function loginUser({ email, password }) {
       headers: { 'Content-Type': 'application/json' }
     })
     .then(
-      response => {
-        return response.json()
+      res => {
+        return res.json()
         .then(data => {
-          if (data.error) errorHandler(dispatch, data.message);
+          if (!data.success) authErrHandler(dispatch, data.message);
           else {
             localStorage.setItem('token', data.token);
             dispatch({ type: AUTH_USER, payload: { name: data.name }});
+            alert('logged in!');
           }
         });
       }, 
-      error => {
-        errorMessage = error.message || 'Failed to communicate with server.';
-        errorHandler(dispatch, errorMessage);
+      err => {
+        errMessage = err.message || 'Failed to communicate with server.';
+        authErrHandler(dispatch, errMessage);
       }
     );
   }
@@ -51,25 +53,26 @@ export function loginUser({ email, password }) {
 
 export function registerUser({ email, name, andrewid, password }) {
   return dispatch => {
-    fetch(`${API_URL}/signup`, {
+    fetch(`${API_URL}/register`, {
       method: 'post',
       body: JSON.stringify({ email, name, andrewid, password }),
       headers: { 'Content-Type': 'application/json' }
     })
     .then(
-      response => {
+      res => {
         return response.json()
         .then(data => {
-          if (data.error) errorHandler(dispatch, data.message);
+          if (!data.success) authErrHandler(dispatch, data.message);
           else {
             localStorage.setItem('token', data.token);
             dispatch({ type: AUTH_USER, payload: { name: data.name }});
+            alert('registered and logged in!');
           }
         });
       },
-      error => {
-        errorMessage = error.message || 'Failed to communicate with server.';
-        errorHandler(dispatch, errorMessage);
+      err => {
+        errMessage = err.message || 'Failed to communicate with server.';
+        authErrHandler(dispatch, errMessage);
       }
     );
   }

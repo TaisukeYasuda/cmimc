@@ -11,11 +11,3 @@ export const RequestStatuses = {
 export const AUTH_USER = 'auth_user', // set user to be authenticated
              UNAUTH_USER = 'unauth_user', // set user to be unauthenticated
              AUTH_ERROR = 'auth_error'; // notify an authentication error
-
-/* problem proposals */
-/*
-export const PROPOSAL_ERROR = 'proposal_error', // notify a proposal error
-             FETCH_MY_PROPOSALS = 'fetch_my_proposals', // fetch proposals written by user
-             POST_PROPOSAL = 'post_proposal', // post a proposal
-             GET_PROPPOSAL = 'get_proposal';
-*/
